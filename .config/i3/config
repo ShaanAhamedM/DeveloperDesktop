@@ -31,13 +31,18 @@ exec_always --no-startup-id feh --bg-fill "$HOME/.config/wallpapers/minimalist-d
 
 # --- Keybindings (Core Requirement 2) ---
 # Launch Terminal & Launcher
-bindsym $mod+Return exec kitty
+bindsym $mod+Return exec env LIBGL_ALWAYS_SOFTWARE=1 kitty || xterm
+bindsym Mod1+Return exec env LIBGL_ALWAYS_SOFTWARE=1 kitty || xterm
 bindsym $mod+space exec rofi -show drun
+bindsym Mod1+space exec rofi -show drun
 bindsym $mod+w exec rofi -show window
+bindsym Mod1+w exec rofi -show window
 
 # Window Control
 bindsym $mod+q kill
+bindsym Mod1+q kill
 bindsym $mod+f fullscreen toggle
+bindsym Mod1+f fullscreen toggle
 bindsym $mod+v floating toggle
 bindsym $mod+s layout stacking
 bindsym $mod+t layout tabbed
