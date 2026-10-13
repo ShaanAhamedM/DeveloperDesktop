@@ -14,8 +14,9 @@ RESOLUTION="${1:-1600x900}"
 
 echo ">> Starting Developer Desktop ($RESOLUTION) on Display $DISPLAY_NUM..."
 
-# Clean up any previous instances
+# Clean up any previous instances and stale locks
 pkill -f "Xephyr $DISPLAY_NUM" 2>/dev/null || true
+rm -f "/tmp/.X${DISPLAY_NUM#:}-lock" "/tmp/.X11-unix/X${DISPLAY_NUM#:}" 2>/dev/null || true
 
 # 1. Launch Xephyr window on Windows host via WSLg
 Xephyr -br -ac -noreset -screen "$RESOLUTION" "$DISPLAY_NUM" &
@@ -23,7 +24,8 @@ XEPHYR_PID=$!
 
 sleep 1.5
 
-# 2. Set Wallpaper inside the desktop window
+# 2. Merge X11 resources and set Wallpaper inside the desktop window
+DISPLAY="$DISPLAY_NUM" xrdb -merge "$HOME/.Xresources" 2>/dev/null || true
 WALLPAPER_FILE="$HOME/.config/wallpapers/minimalist-dark.png"
 if [[ ! -f "$WALLPAPER_FILE" ]]; then
     WALLPAPER_FILE="$(dirname "$0")/../wallpapers/minimalist-dark.png"

@@ -28,6 +28,7 @@ client.placeholder      #181825 #11111b #cdd6f4 #181825   #181825
 
 # --- Autostart Wallpaper & Daemons ---
 exec_always --no-startup-id feh --bg-fill "$HOME/.config/wallpapers/minimalist-dark.png" 2>/dev/null || true
+exec --no-startup-id xterm -title "btop" -e btop
 
 # --- Keybindings (Core Requirement 2) ---
 # Launch Terminal & Launcher
