@@ -1,0 +1,11 @@
+# Personal / Mentorship Workspace
+shaanreferences/
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary / Scratch Files
+*.tmp
+*.bak
