@@ -32,8 +32,8 @@ exec --no-startup-id xterm -title "btop" -e btop
 
 # --- Keybindings (Core Requirement 2) ---
 # Launch Terminal & Launcher
-bindsym $mod+Return exec env LIBGL_ALWAYS_SOFTWARE=1 kitty || xterm
-bindsym Mod1+Return exec env LIBGL_ALWAYS_SOFTWARE=1 kitty || xterm
+bindsym $mod+Return exec xterm
+bindsym Mod1+Return exec xterm
 bindsym $mod+space exec rofi -show drun
 bindsym Mod1+space exec rofi -show drun
 bindsym $mod+w exec rofi -show window
