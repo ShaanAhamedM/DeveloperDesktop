@@ -38,6 +38,8 @@ bindsym $mod+space exec rofi -show drun
 bindsym Mod1+space exec rofi -show drun
 bindsym $mod+w exec rofi -show window
 bindsym Mod1+w exec rofi -show window
+bindsym $mod+m exec xterm -title "btop" -e btop
+bindsym Mod1+m exec xterm -title "btop" -e btop
 
 # Window Control
 bindsym $mod+q kill
