@@ -14,7 +14,9 @@ elif command -v i3-msg &>/dev/null; then
     if i3-msg '[instance="scratchpad_terminal"] scratchpad show' 2>/dev/null | grep -q '"success":true'; then
         true
     else
-        if command -v kitty &>/dev/null; then
+        if [[ -n "${DISPLAY:-}" && "$DISPLAY" == ":1"* ]] || ! command -v kitty &>/dev/null; then
+            xterm -name "$SCRATCH_TITLE" -geometry 110x30 &
+        elif command -v kitty &>/dev/null; then
             kitty --title "$SCRATCH_TITLE" --name "$SCRATCH_TITLE" --override initial_window_width=900 --override initial_window_height=480 &
         elif command -v xterm &>/dev/null; then
             xterm -name "$SCRATCH_TITLE" -geometry 110x30 &

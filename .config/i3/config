@@ -36,10 +36,15 @@ bindsym $mod+Return exec xterm
 bindsym Mod1+Return exec xterm
 bindsym $mod+space exec rofi -show drun
 bindsym Mod1+space exec rofi -show drun
+bindsym Control+space exec rofi -show drun
+bindsym $mod+d exec rofi -show drun
+bindsym Mod1+d exec rofi -show drun
 bindsym $mod+w exec rofi -show window
 bindsym Mod1+w exec rofi -show window
 bindsym $mod+m exec xterm -title "btop" -e btop
 bindsym Mod1+m exec xterm -title "btop" -e btop
+bindsym $mod+p exec "$HOME/.config/scripts/project_picker.sh"
+bindsym Mod1+p exec "$HOME/.config/scripts/project_picker.sh"
 
 # Window Control
 bindsym $mod+q kill
@@ -53,23 +58,39 @@ bindsym $mod+e layout toggle split
 
 # Focus Navigation (Vim & Arrow keys)
 bindsym $mod+h focus left
+bindsym Mod1+h focus left
 bindsym $mod+j focus down
+bindsym Mod1+j focus down
 bindsym $mod+k focus up
+bindsym Mod1+k focus up
 bindsym $mod+l focus right
+bindsym Mod1+l focus right
 bindsym $mod+Left focus left
+bindsym Mod1+Left focus left
 bindsym $mod+Down focus down
+bindsym Mod1+Down focus down
 bindsym $mod+Up focus up
+bindsym Mod1+Up focus up
 bindsym $mod+Right focus right
+bindsym Mod1+Right focus right
 
 # Move Windows (Vim & Arrow keys)
 bindsym $mod+Shift+h move left
+bindsym Mod1+Shift+h move left
 bindsym $mod+Shift+j move down
+bindsym Mod1+Shift+j move down
 bindsym $mod+Shift+k move up
+bindsym Mod1+Shift+k move up
 bindsym $mod+Shift+l move right
+bindsym Mod1+Shift+l move right
 bindsym $mod+Shift+Left move left
+bindsym Mod1+Shift+Left move left
 bindsym $mod+Shift+Down move down
+bindsym Mod1+Shift+Down move down
 bindsym $mod+Shift+Up move up
+bindsym Mod1+Shift+Up move up
 bindsym $mod+Shift+Right move right
+bindsym Mod1+Shift+Right move right
 
 # Workspaces
 set $ws1 "1"
@@ -84,25 +105,43 @@ set $ws9 "9"
 
 # Switch to workspace
 bindsym $mod+1 workspace number $ws1
+bindsym Mod1+1 workspace number $ws1
 bindsym $mod+2 workspace number $ws2
+bindsym Mod1+2 workspace number $ws2
 bindsym $mod+3 workspace number $ws3
+bindsym Mod1+3 workspace number $ws3
 bindsym $mod+4 workspace number $ws4
+bindsym Mod1+4 workspace number $ws4
 bindsym $mod+5 workspace number $ws5
+bindsym Mod1+5 workspace number $ws5
 bindsym $mod+6 workspace number $ws6
+bindsym Mod1+6 workspace number $ws6
 bindsym $mod+7 workspace number $ws7
+bindsym Mod1+7 workspace number $ws7
 bindsym $mod+8 workspace number $ws8
+bindsym Mod1+8 workspace number $ws8
 bindsym $mod+9 workspace number $ws9
+bindsym Mod1+9 workspace number $ws9
 
 # Move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace number $ws1
+bindsym Mod1+Shift+1 move container to workspace number $ws1
 bindsym $mod+Shift+2 move container to workspace number $ws2
+bindsym Mod1+Shift+2 move container to workspace number $ws2
 bindsym $mod+Shift+3 move container to workspace number $ws3
+bindsym Mod1+Shift+3 move container to workspace number $ws3
 bindsym $mod+Shift+4 move container to workspace number $ws4
+bindsym Mod1+Shift+4 move container to workspace number $ws4
 bindsym $mod+Shift+5 move container to workspace number $ws5
+bindsym Mod1+Shift+5 move container to workspace number $ws5
 bindsym $mod+Shift+6 move container to workspace number $ws6
+bindsym Mod1+Shift+6 move container to workspace number $ws6
 bindsym $mod+Shift+7 move container to workspace number $ws7
+bindsym Mod1+Shift+7 move container to workspace number $ws7
 bindsym $mod+Shift+8 move container to workspace number $ws8
+bindsym Mod1+Shift+8 move container to workspace number $ws8
 bindsym $mod+Shift+9 move container to workspace number $ws9
+bindsym Mod1+Shift+9 move container to workspace number $ws9
 
 # Automatic Workspace Assignment (Bonus Requirement)
 assign [class="(?i)code"] $ws1
@@ -113,20 +152,26 @@ assign [class="(?i)discord"] $ws4
 assign [class="(?i)spotify"] $ws5
 
 # Scratchpad Dropdown Terminal
-bindsym $mod+grave [instance="scratchpad_terminal"] scratchpad show; [instance="scratchpad_terminal"] move position center
-bindsym $mod+Shift+grave move scratchpad
+bindsym $mod+grave exec "$HOME/.config/scripts/scratchpad.sh"
+bindsym Mod1+grave exec "$HOME/.config/scripts/scratchpad.sh"
 
 # Screenshots
 bindsym Print exec maim -s | xclip -selection clipboard -t image/png 2>/dev/null || true
 bindsym $mod+Shift+s exec maim -s | xclip -selection clipboard -t image/png 2>/dev/null || true
+bindsym Mod1+Shift+s exec maim -s | xclip -selection clipboard -t image/png 2>/dev/null || true
 
 # Power Menu & Cheatsheet
 bindsym $mod+Shift+slash exec "$HOME/.config/scripts/cheat_sheet.sh"
+bindsym Mod1+Shift+slash exec "$HOME/.config/scripts/cheat_sheet.sh"
+bindsym Mod1+slash exec "$HOME/.config/scripts/cheat_sheet.sh"
 bindsym $mod+Shift+e exec "$HOME/.config/scripts/power_menu.sh"
+bindsym Mod1+Shift+e exec "$HOME/.config/scripts/power_menu.sh"
 
 # Reload / Restart i3 inplace
 bindsym $mod+Shift+c reload
+bindsym Mod1+Shift+c reload
 bindsym $mod+Shift+r restart
+bindsym Mod1+Shift+r restart
 
 # Minimalist Top Status Bar
 bar {
