@@ -21,7 +21,15 @@ fi
 selected=$(find "${VALID_DIRS[@]}" -maxdepth 2 -mindepth 1 -type d 2>/dev/null | rofi -dmenu -i -p "Project" -theme-str 'window {width: 650px;}')
 
 if [[ -n "$selected" ]]; then
-    # Open in VS Code and open terminal
-    code "$selected" 2>/dev/null || true
-    kitty --directory "$selected" &
+    # Open in Code / Neovim
+    if command -v code &>/dev/null; then
+        code "$selected" 2>/dev/null || true
+    fi
+    
+    # Launch terminal in project directory
+    if command -v kitty &>/dev/null; then
+        kitty --directory "$selected" &
+    elif command -v xterm &>/dev/null; then
+        (cd "$selected" && xterm &)
+    fi
 fi

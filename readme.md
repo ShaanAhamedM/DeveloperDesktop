@@ -150,8 +150,11 @@ wsl bash scripts/sys_metrics.sh --json
 wsl kitty
 ```
 
-### 3. Full Desktop Experience via Remote Desktop (RDP)
-Connect via Windows Remote Desktop (`mstsc.exe`) to `localhost:3390` to experience the full tiling window manager, status bar, and wallpaper in an isolated, high-resolution session.
+### 3. Instant Native Desktop Window (1-Click Launch)
+Double-click `launch_desktop.bat` in the repository root to launch the full, isolated Linux developer desktop window directly on Windows via WSLg!
+
+### 4. Full Desktop Experience via Remote Desktop (Optional RDP)
+Run `sudo ./scripts/setup_xrdp.sh` and connect via Windows Remote Desktop (`mstsc.exe`) to `localhost:3390` or your WSL IP for a dedicated RDP session.
 
 ---
 

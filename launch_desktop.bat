@@ -1,7 +1,8 @@
 @echo off
 title Developer Desktop - Minimalist Cockpit
+cd /d "%~dp0"
 echo ========================================================
 echo   Launching Minimalist Developer Desktop via WSLg...
 echo ========================================================
-wsl -u shaan bash -c "chmod +x /mnt/d/OpenSourceProjects/DeveloperDesktop/scripts/*.sh && /mnt/d/OpenSourceProjects/DeveloperDesktop/scripts/launch_desktop.sh"
+wsl bash -c "chmod +x ./scripts/*.sh && ./scripts/launch_desktop.sh"
 pause

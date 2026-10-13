@@ -137,6 +137,19 @@ case "$mode" in
         printf '{"text":"%s","tooltip":"%s","class":"%s","percentage":%d}\n' \
             "$text" "$tooltip" "$class" "$usage"
         ;;
+    --help|-h)
+        echo "Usage: sys_metrics.sh [OPTION]"
+        echo "Modular, sub-millisecond system performance monitor."
+        echo ""
+        echo "Options:"
+        echo "  --all        Print complete human-readable report (default)"
+        echo "  --cpu        Print formatted CPU usage percentage"
+        echo "  --ram        Print formatted RAM memory usage"
+        echo "  --battery    Print battery status or desktop storage fallback"
+        echo "  --json       Output Waybar-compliant JSON payload"
+        echo "  --refresh    Send instant real-time signal to Waybar (RTMIN+8)"
+        echo "  --help, -h   Show this help message"
+        ;;
     --all|*)
         usage=$(get_cpu)
         read -r ram_pct ram_used ram_tot <<< "$(get_ram)"

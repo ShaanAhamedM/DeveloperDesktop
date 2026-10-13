@@ -21,5 +21,13 @@ Super + Ctrl + S       Screenshot Fullscreen (Save)
 Super + Shift + /      Open this Keybinding Cheatsheet
 "
 
-echo -e "$CHEATSHEET" | sed '/^$/d' | rofi -dmenu -i -p "Shortcuts" \
-    -theme-str 'window {width: 620px; padding: 16px;} listview {lines: 10;}'
+if [[ -n "${DISPLAY:-}" || -n "${WAYLAND_DISPLAY:-}" ]] && command -v rofi &>/dev/null; then
+    echo -e "$CHEATSHEET" | sed '/^$/d' | rofi -dmenu -i -p "Shortcuts" \
+        -theme-str 'window {width: 620px; padding: 16px;} listview {lines: 10;}'
+else
+    echo "=========================================================="
+    echo "  Developer Desktop - Keyboard Shortcuts Reference        "
+    echo "=========================================================="
+    echo -e "$CHEATSHEET" | sed '/^$/d'
+    echo "=========================================================="
+fi

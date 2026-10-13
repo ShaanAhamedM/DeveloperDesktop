@@ -17,10 +17,12 @@ WALLPAPER="${1:-$DEFAULT_WALLPAPER}"
 
 echo ">> Syncing theme with wallpaper: $WALLPAPER"
 
-# --- 1. Set Wallpaper via Hyprland Daemon ---
-if command -v hyprctl &>/dev/null; then
+# --- 1. Set Wallpaper (Wayland Hyprpaper or X11 feh) ---
+if command -v hyprctl &>/dev/null && [[ -n "${HYPRLAND_INSTANCE_SIGNATURE:-}" ]]; then
     hyprctl hyprpaper preload "$WALLPAPER" 2>/dev/null || true
     hyprctl hyprpaper wallpaper ",$WALLPAPER" 2>/dev/null || true
+elif command -v feh &>/dev/null; then
+    feh --bg-fill "$WALLPAPER" 2>/dev/null || true
 fi
 
 # --- 2. Dynamic Palette Extraction / Fallback ---
@@ -35,9 +37,13 @@ if command -v wal &>/dev/null && [[ -f "$WALLPAPER" ]]; then
     fi
 fi
 
-# --- 3. Live Broadcast to Hyprland Window Borders ---
-if command -v hyprctl &>/dev/null; then
+# --- 3. Live Broadcast to Window Borders (Hyprland & i3) ---
+if command -v hyprctl &>/dev/null && [[ -n "${HYPRLAND_INSTANCE_SIGNATURE:-}" ]]; then
     hyprctl keyword general:col.active_border "rgba(${ACCENT#'#'}ee)" 2>/dev/null || true
+fi
+
+if command -v i3-msg &>/dev/null; then
+    i3-msg "client.focused $ACCENT #181825 #cdd6f4 $ACCENT $ACCENT" 2>/dev/null || true
 fi
 
 # --- 4. Live Reload Status Bar ---

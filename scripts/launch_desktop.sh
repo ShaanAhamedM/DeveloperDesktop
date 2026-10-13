@@ -24,7 +24,11 @@ XEPHYR_PID=$!
 sleep 1.5
 
 # 2. Set Wallpaper inside the desktop window
-DISPLAY="$DISPLAY_NUM" feh --bg-fill "$HOME/.config/wallpapers/minimalist-dark.png" 2>/dev/null || true
+WALLPAPER_FILE="$HOME/.config/wallpapers/minimalist-dark.png"
+if [[ ! -f "$WALLPAPER_FILE" ]]; then
+    WALLPAPER_FILE="$(dirname "$0")/../wallpapers/minimalist-dark.png"
+fi
+DISPLAY="$DISPLAY_NUM" feh --bg-fill "$WALLPAPER_FILE" 2>/dev/null || true
 
 # 3. Launch the i3 Window Manager inside the desktop window
 echo ">> Launching i3 window manager with Nordic Charcoal theme..."
