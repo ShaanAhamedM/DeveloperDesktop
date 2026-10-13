@@ -1,0 +1,28 @@
+{
+  "name": "Nordic Charcoal",
+  "author": "Shaan",
+  "style": "minimalist-dark",
+  "colors": {
+    "background": "#11111b",
+    "surface": "#181825",
+    "surface_variant": "#1e1e2e",
+    "foreground": "#cdd6f4",
+    "foreground_muted": "#6c7086",
+    "accent": "#89dceb",
+    "accent_dim": "#74c7ec",
+    "border_active": "#89dceb",
+    "border_inactive": "#313244",
+    "selection_bg": "#313244",
+    "selection_fg": "#cdd6f4",
+    "palette": {
+      "black": "#45475a",
+      "red": "#f38ba8",
+      "green": "#a6e3a1",
+      "yellow": "#f9e2af",
+      "blue": "#89b4fa",
+      "magenta": "#cba6f7",
+      "cyan": "#89dceb",
+      "white": "#bac2de"
+    }
+  }
+}
