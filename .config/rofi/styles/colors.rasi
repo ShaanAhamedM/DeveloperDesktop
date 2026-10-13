@@ -1,0 +1,15 @@
+/**
+ * Nordic Charcoal Palette for Rofi
+ * Matches themes/nordic-charcoal.json
+ */
+
+* {
+    bg:             #11111be6;
+    bg-alt:         #181825ee;
+    bg-selected:    #89dceb;
+    fg:             #cdd6f4;
+    fg-alt:         #6c7086;
+    fg-selected:    #11111b;
+    border-col:     #89dceb;
+    border-subtle:  #313244;
+}
