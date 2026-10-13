@@ -98,7 +98,7 @@ case "$mode" in
         usage=$(get_cpu)
         echo "󰍛 ${usage}%"
         ;;
-    --ram)
+    --ram|--mem)
         read -r ram_pct ram_used ram_tot <<< "$(get_ram)"
         echo "󰘚 ${ram_used}G/${ram_tot}G (${ram_pct}%)"
         ;;
@@ -133,9 +133,9 @@ case "$mode" in
             tooltip="CPU: ${usage}%\nRAM: ${ram_used}G / ${ram_tot}G (${ram_pct}%)\nDisk: ${bat_val}% used (${bat_extra} free)"
         fi
 
-        # Format JSON for Waybar custom module
-        printf '{"text":"%s","tooltip":"%s","class":"%s","percentage":%d}\n' \
-            "$text" "$tooltip" "$class" "$usage"
+        # Format JSON for Waybar custom module & external consumers
+        printf '{"text":"%s","tooltip":"%s","class":"%s","percentage":%d,"cpu_percent":%d,"ram_percent":%d,"ram_used_gb":"%s","ram_total_gb":"%s"}\n' \
+            "$text" "$tooltip" "$class" "$usage" "$usage" "$ram_pct" "$ram_used" "$ram_tot"
         ;;
     --help|-h)
         echo "Usage: sys_metrics.sh [OPTION]"

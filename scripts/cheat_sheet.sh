@@ -21,13 +21,13 @@ Super + Ctrl + S       Screenshot Fullscreen (Save)
 Super + Shift + /      Open this Keybinding Cheatsheet
 "
 
-if [[ -n "${DISPLAY:-}" || -n "${WAYLAND_DISPLAY:-}" ]] && command -v rofi &>/dev/null; then
-    echo -e "$CHEATSHEET" | sed '/^$/d' | rofi -dmenu -i -p "Shortcuts" \
-        -theme-str 'window {width: 620px; padding: 16px;} listview {lines: 10;}'
-else
+if [[ "${1:-}" == "--text" || "${1:-}" == "-t" ]] || ! command -v rofi &>/dev/null || [[ -z "${DISPLAY:-}" && -z "${WAYLAND_DISPLAY:-}" ]]; then
     echo "=========================================================="
     echo "  Developer Desktop - Keyboard Shortcuts Reference        "
     echo "=========================================================="
     echo -e "$CHEATSHEET" | sed '/^$/d'
     echo "=========================================================="
+else
+    echo -e "$CHEATSHEET" | sed '/^$/d' | rofi -dmenu -i -p "Shortcuts" \
+        -theme-str 'window {width: 620px; padding: 16px;} listview {lines: 10;}'
 fi
