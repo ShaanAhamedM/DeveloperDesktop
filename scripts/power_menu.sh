@@ -38,12 +38,12 @@ case "$chosen" in
         systemctl suspend 2>/dev/null || true
         ;;
     "$logout")
-        hyprctl dispatch exit 0 2>/dev/null || i3-msg exit 2>/dev/null || loginctl terminate-session "${XDG_SESSION_ID:-}" 2>/dev/null || true
+        hyprctl dispatch exit 2>/dev/null || i3-msg exit 2>/dev/null || loginctl terminate-session "${XDG_SESSION_ID:-}" 2>/dev/null || true
         ;;
     "$reboot")
-        systemctl reboot 2>/dev/null || sudo reboot
+        systemctl reboot 2>/dev/null || sudo -n reboot 2>/dev/null || true
         ;;
     "$shutdown")
-        systemctl poweroff 2>/dev/null || sudo poweroff
+        systemctl poweroff 2>/dev/null || sudo -n poweroff 2>/dev/null || true
         ;;
 esac

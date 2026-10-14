@@ -31,6 +31,9 @@ get_cpu() {
     else
         cpu_usage=$(top -bn1 2>/dev/null | awk '/Cpu\(s\)/ {print int($2 + $4)}') || cpu_usage=0
     fi
+    # Clamp bounds to 0-100%
+    (( cpu_usage < 0 )) && cpu_usage=0
+    (( cpu_usage > 100 )) && cpu_usage=100
     echo "$cpu_usage"
 }
 
@@ -38,10 +41,18 @@ get_cpu() {
 get_ram() {
     # Parse /proc/meminfo directly for instant microsecond execution
     if [[ -f /proc/meminfo ]]; then
-        mem_total=$(awk '/MemTotal/ {print $2}' /proc/meminfo)
-        mem_available=$(awk '/MemAvailable/ {print $2}' /proc/meminfo)
+        mem_total=$(awk '/MemTotal/ {print $2}' /proc/meminfo || echo 1)
+        mem_available=$(awk '/MemAvailable/ {print $2}' /proc/meminfo || true)
+        # Fallback for older enterprise kernels where MemAvailable is absent
+        if [[ -z "$mem_available" ]]; then
+            mem_available=$(awk '/MemFree/ {f=$2} /Buffers/ {b=$2} /Cached/ {c=$2} END {print f+b+c}' /proc/meminfo 2>/dev/null || echo 0)
+        fi
+        mem_total=${mem_total:-1}
+        mem_available=${mem_available:-0}
         mem_used=$((mem_total - mem_available))
+        (( mem_used < 0 )) && mem_used=0
         ram_percent=$(( 100 * mem_used / mem_total ))
+        (( ram_percent > 100 )) && ram_percent=100
         ram_used_gb=$(awk "BEGIN {printf \"%.1f\", $mem_used / 1048576}")
         ram_total_gb=$(awk "BEGIN {printf \"%.1f\", $mem_total / 1048576}")
     else
@@ -63,8 +74,12 @@ get_battery() {
     done
 
     if [[ -n "$bat_path" && -f "$bat_path/capacity" ]]; then
-        capacity=$(cat "$bat_path/capacity")
+        capacity=$(cat "$bat_path/capacity" 2>/dev/null || echo 0)
         status=$(cat "$bat_path/status" 2>/dev/null || echo "Unknown")
+        # Sanitize status to prevent word-splitting (e.g. 'Not charging' -> 'Not-charging')
+        status="${status// /-}"
+        (( capacity < 0 )) && capacity=0
+        (( capacity > 100 )) && capacity=100
         icon="󰁹"
         if (( capacity < 20 )); then icon="󰁺";
         elif (( capacity < 50 )); then icon="󰁼";

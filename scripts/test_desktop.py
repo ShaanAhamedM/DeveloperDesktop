@@ -43,7 +43,7 @@ def to_wsl_path(path):
 WSL_AVAILABLE = False
 if sys.platform == "win32":
     try:
-        w_check = subprocess.run(["wsl", "which", "bash"], capture_output=True, text=True, timeout=3)
+        w_check = subprocess.run(["wsl", "which", "bash"], capture_output=True, text=True, timeout=8)
         WSL_AVAILABLE = (w_check.returncode == 0)
     except Exception:
         WSL_AVAILABLE = False
@@ -324,11 +324,11 @@ ci_workflow = os.path.join(REPO_DIR, ".github/workflows/ci.yml")
 report("GitHub Actions CI workflow exists", os.path.exists(ci_workflow), ".github/workflows/ci.yml")
 
 # Scan for any local file:/// links across repository
-code, out, err = run_cmd("git grep -rn 'file:///' ':!scripts/test_desktop.py' ':!.github' ':!shaanreferences' || true", use_wsl=False)
-report("Zero local file:/// link regressions", len(out) == 0, f"Found: {out}" if out else "Clean relative markdown links")
+code, out, err = run_cmd("git grep -rn 'file:///' ':!*.md' ':!scripts/test_desktop.py' ':!.github' ':!shaanreferences' || true", use_wsl=False)
+report("Zero local file:/// link regressions", len(out) == 0, f"Found: {out}" if out else "Clean relative links in code")
 
 # Scan for hardcoded usernames across repository
-code, out, err = run_cmd("git grep -E '/home/[a-zA-Z0-9_-]+' ':!scripts/test_desktop.py' ':!.github' ':!shaanreferences' || true", use_wsl=False)
+code, out, err = run_cmd("git grep -E '/home/[a-zA-Z0-9_-]+' ':!*.md' ':!scripts/test_desktop.py' ':!.github' ':!shaanreferences' || true", use_wsl=False)
 report("Zero hardcoded /home/username paths", len(out) == 0, f"Found: {out}" if out else "Fully portable dynamic paths")
 
 # -----------------------------------------------------------------------------

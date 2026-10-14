@@ -105,6 +105,12 @@ if [[ "$ROLLBACK" == true ]]; then
         fi
     done
 
+    # Remove tmux symlink if present
+    if [[ -L "$HOME/.tmux.conf" ]]; then
+        log_info "Removing symlink: $HOME/.tmux.conf"
+        [[ "$DRY_RUN" == false ]] && rm -f "$HOME/.tmux.conf"
+    fi
+
     # Remove script symlinks
     if [[ -d "$CONFIG_DIR/scripts" ]]; then
         for script in "$DOTFILES_DIR/scripts"/*; do
@@ -116,14 +122,27 @@ if [[ "$ROLLBACK" == true ]]; then
                 [[ "$DRY_RUN" == false ]] && rm -f "$LOCAL_BIN/$sname"
             fi
         done
+        rmdir "$CONFIG_DIR/scripts" 2>/dev/null || true
     fi
+
+    # Clean shell integration lines from ~/.bashrc and ~/.zshrc
+    for rc in "$HOME/.bashrc" "$HOME/.zshrc"; do
+        if [[ -f "$rc" ]] && grep -q "developer_environment.sh" "$rc" 2>/dev/null; then
+            log_info "Cleaning Developer Desktop integration from $rc..."
+            [[ "$DRY_RUN" == false ]] && sed -i '/# Developer Desktop Environment/,+1d' "$rc" 2>/dev/null || true
+        fi
+    done
 
     # Check for latest backup
     latest_backup=$(find "$CONFIG_DIR" -maxdepth 1 -name "backup_*" -type d 2>/dev/null | sort -r | head -n1 || true)
     if [[ -n "$latest_backup" && -d "$latest_backup" ]]; then
         log_info "Restoring previous configuration from: $latest_backup"
         if [[ "$DRY_RUN" == false ]]; then
+            if [[ -f "$latest_backup/.tmux.conf" ]]; then
+                mv "$latest_backup/.tmux.conf" "$HOME/.tmux.conf"
+            fi
             cp -r "$latest_backup"/* "$CONFIG_DIR/" 2>/dev/null || true
+            rm -rf "$latest_backup"
             log_success "Configs successfully restored from $latest_backup"
         else
             log_info "[DRY-RUN] Would restore files from $latest_backup to $CONFIG_DIR"
@@ -166,18 +185,20 @@ else
         if [[ "$DRY_RUN" == false ]]; then
             run_priv pacman -S --needed --noconfirm \
                 hyprland i3-wm waybar rofi-wayland kitty dunst grim slurp wl-clipboard feh \
-                ttf-jetbrains-mono-nerd btop pavucontrol fastfetch tmux neovim starship 2>/dev/null || \
+                ttf-jetbrains-mono-nerd btop pavucontrol fastfetch tmux neovim starship \
+                xterm xorg-server-xephyr maim xclip 2>/dev/null || \
             run_priv pacman -S --needed --noconfirm \
-                i3-wm kitty dunst feh btop tmux neovim 2>/dev/null || true
+                i3-wm kitty dunst feh btop tmux neovim xterm 2>/dev/null || true
         fi
         log_success "Package dependencies checked (pacman)."
     elif command -v apt-get &>/dev/null; then
         log_info "Debian/Ubuntu detected (apt)."
         if [[ "$DRY_RUN" == false ]]; then
-            run_priv apt-get update -y -qq
+            run_priv apt-get update -y -qq 2>/dev/null || log_warn "apt-get update completed with warnings; proceeding with installation."
             run_priv apt-get install -y --no-install-recommends \
                 i3 kitty rofi waybar dunst grim slurp wl-clipboard feh \
-                fonts-jetbrains-mono btop pavucontrol tmux neovim 2>/dev/null || true
+                fonts-jetbrains-mono btop pavucontrol tmux neovim \
+                xterm xserver-xephyr maim xclip 2>/dev/null || true
         fi
         log_success "Package dependencies checked (apt)."
     elif command -v dnf &>/dev/null; then
@@ -185,7 +206,8 @@ else
         if [[ "$DRY_RUN" == false ]]; then
             run_priv dnf install -y \
                 i3 waybar rofi kitty dunst grim slurp wl-clipboard feh \
-                jetbrains-mono-fonts-all btop pavucontrol tmux neovim 2>/dev/null || true
+                jetbrains-mono-fonts-all btop pavucontrol tmux neovim \
+                xterm xorg-x11-server-Xephyr maim xclip 2>/dev/null || true
         fi
         log_success "Package dependencies checked (dnf)."
     else
@@ -213,6 +235,15 @@ for app_dir in "$DOTFILES_DIR/.config"/*; do
         backed_up_count=$((backed_up_count + 1))
     fi
 done
+
+# Also check and backup ~/.tmux.conf if it exists and is not a symlink
+if [[ -e "$HOME/.tmux.conf" && ! -L "$HOME/.tmux.conf" ]]; then
+    log_info "Backing up existing non-symlinked ~/.tmux.conf -> $BACKUP_DIR/"
+    if [[ "$DRY_RUN" == false ]]; then
+        mv "$HOME/.tmux.conf" "$BACKUP_DIR/"
+    fi
+    backed_up_count=$((backed_up_count + 1))
+fi
 
 # If nothing was backed up, clean up the empty backup dir
 if [[ "$DRY_RUN" == false ]]; then
@@ -270,29 +301,31 @@ done
 # --- 4. Deploy Wallpapers ---
 log_step "4" "Setting up Nordic Charcoal wallpapers..."
 WALLPAPER_DEST="$HOME/Pictures/Wallpapers"
+WALLPAPER_CONFIG="$CONFIG_DIR/wallpapers"
 if [[ "$DRY_RUN" == false ]]; then
-    mkdir -p "$WALLPAPER_DEST"
+    mkdir -p "$WALLPAPER_DEST" "$WALLPAPER_CONFIG"
     if [[ -d "$DOTFILES_DIR/wallpapers" ]]; then
         cp -r "$DOTFILES_DIR/wallpapers"/* "$WALLPAPER_DEST/" 2>/dev/null || true
+        cp -r "$DOTFILES_DIR/wallpapers"/* "$WALLPAPER_CONFIG/" 2>/dev/null || true
     fi
 fi
-log_success "Wallpapers synchronized to: $WALLPAPER_DEST"
+log_success "Wallpapers synchronized to: $WALLPAPER_DEST and $WALLPAPER_CONFIG"
 
 # --- 5. Integrate Shell & Apply Theme ---
 log_step "5" "Configuring shell environment & dynamic theming..."
 SHELL_SOURCE_LINE="[[ -f \"\$HOME/.config/shell/developer_environment.sh\" ]] && source \"\$HOME/.config/shell/developer_environment.sh\""
-BASHRC="$HOME/.bashrc"
-
-if [[ -f "$BASHRC" ]]; then
-    if ! grep -q "developer_environment.sh" "$BASHRC" 2>/dev/null; then
-        if [[ "$DRY_RUN" == false ]]; then
-            echo -e "\n# Developer Desktop Environment\n$SHELL_SOURCE_LINE" >> "$BASHRC"
+for rc in "$HOME/.bashrc" "$HOME/.zshrc"; do
+    if [[ -f "$rc" ]]; then
+        if ! grep -q "developer_environment.sh" "$rc" 2>/dev/null; then
+            if [[ "$DRY_RUN" == false ]]; then
+                echo -e "\n# Developer Desktop Environment\n$SHELL_SOURCE_LINE" >> "$rc"
+            fi
+            log_success "Added Developer Desktop shell integration to $(basename "$rc")"
+        else
+            log_info "Shell integration already present in $(basename "$rc")"
         fi
-        log_success "Added Developer Desktop shell integration to ~/.bashrc"
-    else
-        log_info "Shell integration already present in ~/.bashrc"
     fi
-fi
+done
 
 # Apply theme sync
 if [[ "$DRY_RUN" == false ]]; then

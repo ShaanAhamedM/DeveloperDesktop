@@ -99,7 +99,7 @@ function _G.statusline()
     local line = vim.fn.line(".")
     local col = vim.fn.col(".")
     local total = vim.fn.line("$")
-    local pct = math.floor((line / total) * 100)
+    local pct = total > 0 and math.floor((line / total) * 100) or 0
 
     return string.format(
         "%%#StatusLine# 󰄛 %s %%#StatusLineNC# │ %s%s%s %%= %%#StatusLine# %s │ 󰌑 %d:%d │ %d%%%% ",

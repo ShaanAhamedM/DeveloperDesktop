@@ -4,16 +4,21 @@
 #  Maintained by: Shaan
 # ==============================================================================
 #  Extracts color harmony from wallpapers and live-reloads:
-#  - Kitty Terminal (via IPC socket)
-#  - Waybar Status Bar (via SIGUSR2)
-#  - Rofi Launcher
-#  - Hyprland window borders
+#  - Window Borders (Hyprland & i3)
+#  - Status Bar (Waybar via SIGUSR2)
+#  - Notification Daemon (Dunst via SIGHUP)
+#  - Desktop Wallpaper (Hyprpaper or feh)
 # ==============================================================================
 
 set -euo pipefail
 
 DEFAULT_WALLPAPER="$(dirname "$0")/../wallpapers/minimalist-dark.png"
 WALLPAPER="${1:-$DEFAULT_WALLPAPER}"
+
+if [[ ! -f "$WALLPAPER" ]]; then
+    echo "Error: Wallpaper file not found: $WALLPAPER" >&2
+    exit 1
+fi
 
 echo ">> Syncing theme with wallpaper: $WALLPAPER"
 

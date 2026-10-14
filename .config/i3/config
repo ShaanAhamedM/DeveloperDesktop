@@ -27,13 +27,13 @@ client.urgent           #f38ba8 #181825 #f38ba8 #f38ba8   #f38ba8
 client.placeholder      #181825 #11111b #cdd6f4 #181825   #181825
 
 # --- Autostart Wallpaper & Daemons ---
-exec_always --no-startup-id feh --bg-fill "$HOME/.config/wallpapers/minimalist-dark.png" 2>/dev/null || true
-exec --no-startup-id xterm -title "btop" -e btop
+exec_always --no-startup-id sh -c 'feh --bg-fill "$HOME/.config/wallpapers/minimalist-dark.png" 2>/dev/null || feh --bg-fill "$HOME/Pictures/Wallpapers/minimalist-dark.png" 2>/dev/null || true'
+exec --no-startup-id sh -c 'kitty -e btop 2>/dev/null || xterm -title "btop" -e btop'
 
 # --- Keybindings (Core Requirement 2) ---
 # Launch Terminal & Launcher
-bindsym $mod+Return exec xterm
-bindsym Mod1+Return exec xterm
+bindsym $mod+Return exec "kitty || xterm"
+bindsym Mod1+Return exec "kitty || xterm"
 bindsym $mod+space exec rofi -show drun
 bindsym Mod1+space exec rofi -show drun
 bindsym Control+space exec rofi -show drun
@@ -41,10 +41,11 @@ bindsym $mod+d exec rofi -show drun
 bindsym Mod1+d exec rofi -show drun
 bindsym $mod+w exec rofi -show window
 bindsym Mod1+w exec rofi -show window
-bindsym $mod+m exec xterm -title "btop" -e btop
-bindsym Mod1+m exec xterm -title "btop" -e btop
+bindsym $mod+m exec "kitty -e btop || xterm -title btop -e btop"
+bindsym Mod1+m exec "kitty -e btop || xterm -title btop -e btop"
 bindsym $mod+p exec "$HOME/.config/scripts/project_picker.sh"
-bindsym Mod1+p exec "$HOME/.config/scripts/project_picker.sh"
+bindsym $mod+o exec "$HOME/.config/scripts/project_picker.sh"
+bindsym Mod1+o exec "$HOME/.config/scripts/project_picker.sh"
 
 # Window Control
 bindsym $mod+q kill
@@ -57,14 +58,11 @@ bindsym $mod+t layout tabbed
 bindsym $mod+e layout toggle split
 
 # Focus Navigation (Vim & Arrow keys)
+# Note: Mod1+h/j/k/l reserved for Tmux pane navigation
 bindsym $mod+h focus left
-bindsym Mod1+h focus left
 bindsym $mod+j focus down
-bindsym Mod1+j focus down
 bindsym $mod+k focus up
-bindsym Mod1+k focus up
 bindsym $mod+l focus right
-bindsym Mod1+l focus right
 bindsym $mod+Left focus left
 bindsym Mod1+Left focus left
 bindsym $mod+Down focus down
@@ -76,13 +74,9 @@ bindsym Mod1+Right focus right
 
 # Move Windows (Vim & Arrow keys)
 bindsym $mod+Shift+h move left
-bindsym Mod1+Shift+h move left
 bindsym $mod+Shift+j move down
-bindsym Mod1+Shift+j move down
 bindsym $mod+Shift+k move up
-bindsym Mod1+Shift+k move up
 bindsym $mod+Shift+l move right
-bindsym Mod1+Shift+l move right
 bindsym $mod+Shift+Left move left
 bindsym Mod1+Shift+Left move left
 bindsym $mod+Shift+Down move down

@@ -19,14 +19,14 @@ jobs:
 
       - name: Validate Bash Script Syntax (bash -n)
         run: |
-          for script in install.sh scripts/*.sh; do
+          for script in install.sh scripts/*.sh .config/shell/*.sh; do
             bash -n "$script"
             echo "✓ Clean syntax: $script"
           done
 
       - name: Run ShellCheck on Shell Scripts
         run: |
-          shellcheck -e SC1090,SC1091,SC2034,SC2154 install.sh scripts/*.sh
+          shellcheck -e SC1090,SC1091,SC2034,SC2154 install.sh scripts/*.sh .config/shell/*.sh
 
       - name: Validate Theme & Configuration JSON
         run: |

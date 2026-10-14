@@ -17,7 +17,6 @@
         "custom/metrics",
         "pulseaudio",
         "network",
-        "battery",
         "custom/power"
     ],
 

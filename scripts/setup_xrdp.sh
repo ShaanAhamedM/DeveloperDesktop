@@ -9,7 +9,8 @@
 set -euo pipefail
 
 TARGET_USER="${SUDO_USER:-$(id -u -n)}"
-TARGET_HOME="$(getent passwd "$TARGET_USER" 2>/dev/null | cut -d: -f6 || echo "$HOME")"
+TARGET_HOME="$(getent passwd "$TARGET_USER" 2>/dev/null | cut -d: -f6 || true)"
+TARGET_HOME="${TARGET_HOME:-$HOME}"
 TARGET_GROUP="$(id -g -n "$TARGET_USER" 2>/dev/null || echo "$TARGET_USER")"
 DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
@@ -41,11 +42,14 @@ if [[ -d "$DOTFILES_DIR/scripts" ]]; then
     chmod +x "$TARGET_HOME/.config/scripts"/*.sh 2>/dev/null || true
 fi
 mkdir -p "$TARGET_HOME/.config/wallpapers"
+mkdir -p "$TARGET_HOME/Pictures/Wallpapers"
 if [[ -d "$DOTFILES_DIR/wallpapers" ]]; then
     cp -r "$DOTFILES_DIR/wallpapers"/* "$TARGET_HOME/.config/wallpapers/" 2>/dev/null || true
+    cp -r "$DOTFILES_DIR/wallpapers"/* "$TARGET_HOME/Pictures/Wallpapers/" 2>/dev/null || true
 fi
 
 chown -R "$TARGET_USER:$TARGET_GROUP" "$TARGET_HOME/.config" 2>/dev/null || true
+chown -R "$TARGET_USER:$TARGET_GROUP" "$TARGET_HOME/Pictures" 2>/dev/null || true
 
 # 4. Restart XRDP Service if available
 if command -v systemctl &>/dev/null && systemctl is-active --quiet xrdp 2>/dev/null; then

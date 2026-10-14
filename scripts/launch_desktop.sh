@@ -18,6 +18,13 @@ echo ">> Starting Developer Desktop ($RESOLUTION) on Display $DISPLAY_NUM..."
 pkill -f "Xephyr $DISPLAY_NUM" 2>/dev/null || true
 rm -f "/tmp/.X${DISPLAY_NUM#:}-lock" "/tmp/.X11-unix/X${DISPLAY_NUM#:}" 2>/dev/null || true
 
+# Pre-flight check: ensure Xephyr is installed
+if ! command -v Xephyr &>/dev/null; then
+    echo "Error: Xephyr is not installed." >&2
+    echo "Please run: sudo apt-get install -y xserver-xephyr (Debian/Ubuntu) or sudo pacman -S xorg-server-xephyr (Arch)" >&2
+    exit 1
+fi
+
 # 1. Launch Xephyr window on Windows host via WSLg
 Xephyr -br -ac -noreset -screen "$RESOLUTION" "$DISPLAY_NUM" &
 XEPHYR_PID=$!

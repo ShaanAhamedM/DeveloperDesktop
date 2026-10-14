@@ -12,7 +12,7 @@
 
 **A keyboard-driven, minimalist developer cockpit designed with mathematical symmetry and zero bloat.**
 
-[Features](#-core-features--bonus-highlights) • [Architecture](#-architecture) • [Developer Cockpit](#-developer-cockpit-suite) • [Keyboard Shortcuts](#-keyboard-shortcuts-reference) • [Installation](#-enterprise-one-command-installer) • [Automated Testing](#-automated-testing--ci)
+[Features](#core-features--bonus-highlights) • [Architecture](#architecture) • [Developer Cockpit](#developer-cockpit-suite) • [Keyboard Shortcuts](#keyboard-shortcuts-reference) • [Installation](#enterprise-one-command-installer) • [Automated Testing](#automated-testing--ci)
 
 </div>
 
