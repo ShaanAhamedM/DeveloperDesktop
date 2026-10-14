@@ -1,0 +1,77 @@
+# ==============================================================================
+#  Starship Prompt Configuration - Nordic Charcoal Minimalist
+#  Maintained by: Shaan
+# ==============================================================================
+
+format = """
+[┌─](bold #89dceb)$directory$git_branch$git_status$package$python$rust$golang$nodejs
+[└─>](bold #89dceb) """
+
+right_format = """$cmd_duration$status"""
+
+# Continuation prompt
+continuation_prompt = "[∙∙∙](bold #6c7086) "
+
+# Add blank line between commands
+add_newline = true
+
+[directory]
+style = "bold #89dceb"
+format = "[$path]($style) "
+truncation_length = 3
+truncation_symbol = "…/"
+
+[git_branch]
+style = "bold #89b4fa"
+format = "[$symbol$branch]($style) "
+symbol = " "
+
+[git_status]
+style = "bold #f38ba8"
+format = "([\\[$all_status$ahead_behind\\]]($style) )"
+conflicted = "󰞇 "
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "⇡${ahead_count}⇣${behind_count}"
+untracked = ""
+stashed = " "
+modified = ""
+staged = "✓"
+renamed = "»"
+deleted = "✕"
+
+[cmd_duration]
+min_time = 2000
+style = "bold #f9e2af"
+format = "[$duration]($style)"
+
+[status]
+style = "bold #f38ba8"
+symbol = "✕"
+format = "[$symbol $status]($style)"
+disabled = false
+
+[package]
+symbol = "󰏗 "
+style = "bold #6c7086"
+format = "[$symbol$version]($style) "
+
+[python]
+symbol = " "
+style = "bold #a6e3a1"
+format = "[$symbol($version )]($style)"
+
+[rust]
+symbol = " "
+style = "bold #f38ba8"
+format = "[$symbol($version )]($style)"
+
+[golang]
+symbol = " "
+style = "bold #89dceb"
+format = "[$symbol($version )]($style)"
+
+[nodejs]
+symbol = " "
+style = "bold #a6e3a1"
+format = "[$symbol($version )]($style)"

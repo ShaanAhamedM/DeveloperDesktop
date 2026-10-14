@@ -176,7 +176,7 @@ bindsym Mod1+Shift+r restart
 # Minimalist Top Status Bar
 bar {
     position top
-    status_command while true; do ~/.config/scripts/sys_metrics.sh --all 2>/dev/null | grep -E "CPU|RAM|Battery|Storage" | tr '\n' '  '; date +'%H:%M:%S  %a %d %b'; sleep 2; done
+    status_command while true; do ~/.config/scripts/sys_metrics.sh --bar 2>/dev/null || true; sleep 2; done
     colors {
         background #11111b
         statusline #cdd6f4

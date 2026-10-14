@@ -137,18 +137,34 @@ case "$mode" in
         printf '{"text":"%s","tooltip":"%s","class":"%s","percentage":%d,"cpu_percent":%d,"ram_percent":%d,"ram_used_gb":"%s","ram_total_gb":"%s"}\n' \
             "$text" "$tooltip" "$class" "$usage" "$usage" "$ram_pct" "$ram_used" "$ram_tot"
         ;;
+    --bar|--compact)
+        usage=$(get_cpu)
+        read -r ram_pct ram_used ram_tot <<< "$(get_ram)"
+        read -r bat_type bat_val bat_extra bat_icon <<< "$(get_battery)"
+        timestamp=$(date +'%H:%M:%S  %a %d %b')
+        if [[ "$bat_type" == "battery" ]]; then
+            echo "󰍛 ${usage}%  |  󰘚 ${ram_used}G/${ram_tot}G (${ram_pct}%)  |  ${bat_icon} ${bat_val}%  |   ${timestamp}"
+        else
+            echo "󰍛 ${usage}%  |  󰘚 ${ram_used}G/${ram_tot}G (${ram_pct}%)  |  ${bat_icon} ${bat_val}% used (${bat_extra} free)  |   ${timestamp}"
+        fi
+        ;;
+    --version|-v)
+        echo "sys_metrics.sh v2.0.0 (DeveloperDesktop Edition)"
+        ;;
     --help|-h)
         echo "Usage: sys_metrics.sh [OPTION]"
         echo "Modular, sub-millisecond system performance monitor."
         echo ""
         echo "Options:"
-        echo "  --all        Print complete human-readable report (default)"
-        echo "  --cpu        Print formatted CPU usage percentage"
-        echo "  --ram        Print formatted RAM memory usage"
-        echo "  --battery    Print battery status or desktop storage fallback"
-        echo "  --json       Output Waybar-compliant JSON payload"
-        echo "  --refresh    Send instant real-time signal to Waybar (RTMIN+8)"
-        echo "  --help, -h   Show this help message"
+        echo "  --all            Print complete human-readable report (default)"
+        echo "  --cpu            Print formatted CPU usage percentage"
+        echo "  --ram, --mem     Print formatted RAM memory usage"
+        echo "  --battery        Print battery status or desktop storage fallback"
+        echo "  --bar, --compact Formatted single-line status stream for status bars"
+        echo "  --json           Output Waybar-compliant JSON payload"
+        echo "  --refresh        Send instant real-time signal to Waybar (RTMIN+8)"
+        echo "  --version, -v    Show version number"
+        echo "  --help, -h       Show this help message"
         ;;
     --all|*)
         usage=$(get_cpu)
