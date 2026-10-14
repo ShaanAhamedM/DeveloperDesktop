@@ -15,13 +15,16 @@ shutdown="  Power Off"
 
 options="$lock\n$suspend\n$logout\n$reboot\n$shutdown"
 
-if ! command -v rofi &>/dev/null || [[ -z "${DISPLAY:-}" && -z "${WAYLAND_DISPLAY:-}" ]]; then
-    echo "Developer Desktop Power Menu:"
-    echo "1) Lock"
-    echo "2) Suspend"
-    echo "3) Logout"
-    echo "4) Reboot"
-    echo "5) Power Off"
+if [[ "${1:-}" == "--text" || "${1:-}" == "-t" || "${1:-}" == "--help" || "${1:-}" == "-h" ]] || ! command -v rofi &>/dev/null || [[ -z "${DISPLAY:-}" && -z "${WAYLAND_DISPLAY:-}" ]]; then
+    echo "=========================================="
+    echo "  Developer Desktop - Power Menu Options  "
+    echo "=========================================="
+    echo "  1) Lock      (hyprlock / swaylock)"
+    echo "  2) Suspend   (systemctl suspend)"
+    echo "  3) Logout    (graceful session exit)"
+    echo "  4) Reboot    (systemctl reboot)"
+    echo "  5) Power Off (systemctl poweroff)"
+    echo "=========================================="
     exit 0
 fi
 

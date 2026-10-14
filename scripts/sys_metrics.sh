@@ -91,6 +91,7 @@ trigger_refresh() {
 }
 
 # --- CLI & JSON Output Dispatcher ---
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 mode="${1:---all}"
 
 case "$mode" in
@@ -184,3 +185,4 @@ case "$mode" in
         echo "=========================================="
         ;;
 esac
+fi
