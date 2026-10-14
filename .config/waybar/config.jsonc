@@ -93,6 +93,6 @@
     "custom/power": {
         "format": "",
         "tooltip": false,
-        "on-click": "rofi -show power-menu -modi power-menu:~/.config/scripts/power_menu.sh"
+        "on-click": "$HOME/.config/scripts/power_menu.sh"
     }
 }

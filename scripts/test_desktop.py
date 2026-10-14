@@ -10,6 +10,13 @@ import json
 import time
 import subprocess
 import shutil
+import io
+
+if sys.platform == "win32":
+    if hasattr(sys.stdout, "buffer"):
+        sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
+    if hasattr(sys.stderr, "buffer"):
+        sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding="utf-8", errors="replace")
 
 class Colors:
     GREEN = '\033[92m'
@@ -38,6 +45,8 @@ def run_cmd(cmd, env=None, timeout=10):
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=True,
+            encoding="utf-8",
+            errors="replace",
             env=env or os.environ.copy(),
             timeout=timeout
         )

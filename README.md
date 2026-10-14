@@ -160,4 +160,4 @@ Run `sudo ./scripts/setup_xrdp.sh` and connect via Windows Remote Desktop (`msts
 
 ## 📄 License
 
-This project is licensed under the [MIT License](file:///D:/OpenSourceProjects/DeveloperDesktop/license). Built by **Shaan**.
+This project is licensed under the [MIT License](LICENSE). Built by **Shaan**.
