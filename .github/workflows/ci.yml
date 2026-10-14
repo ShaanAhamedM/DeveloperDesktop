@@ -1,0 +1,97 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, publish-ready ]
+  pull_request:
+    branches: [ main, publish-ready ]
+
+jobs:
+  lint-and-validate:
+    name: Lint & Syntax Validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install ShellCheck
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq shellcheck
+
+      - name: Validate Bash Script Syntax (bash -n)
+        run: |
+          for script in install.sh scripts/*.sh; do
+            bash -n "$script"
+            echo "✓ Clean syntax: $script"
+          done
+
+      - name: Run ShellCheck on Shell Scripts
+        run: |
+          shellcheck -e SC1090,SC1091,SC2034,SC2154 install.sh scripts/*.sh
+
+      - name: Validate Theme & Configuration JSON
+        run: |
+          python3 -c "import json, glob; [json.load(open(f)) for f in glob.glob('themes/*.json')]"
+          echo "✓ All JSON palettes valid."
+
+      - name: Check for Local File Link Regressions
+        run: |
+          if grep -rn "file:///" README.md LICENSE .config/ scripts/; then
+            echo "Error: Local file:/// URI found!"
+            exit 1
+          fi
+          echo "✓ Zero local file URIs detected."
+
+  test-suite:
+    name: Verification Test Matrix
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install System Dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq i3 xterm rofi feh btop
+
+      - name: Run Automated Test Suite
+        run: |
+          python3 scripts/test_desktop.py
+
+  installer-idempotency:
+    name: Installer Idempotency & Rollback
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Test Installer Dry-Run
+        run: |
+          chmod +x install.sh
+          ./install.sh --dry-run
+
+      - name: Test First-Pass Clean Install
+        run: |
+          ./install.sh --no-deps -y
+          test -L "$HOME/.config/hypr"
+          test -L "$HOME/.config/i3"
+          test -L "$HOME/.config/kitty"
+          test -L "$HOME/.config/waybar"
+          test -L "$HOME/.config/starship.toml"
+          echo "✓ Initial deployment verified."
+
+      - name: Test Second-Pass Idempotency
+        run: |
+          ./install.sh --no-deps -y
+          test -L "$HOME/.config/hypr"
+          echo "✓ Idempotency verified on re-run."
+
+      - name: Test Rollback & Restoration
+        run: |
+          ./install.sh --rollback
+          test ! -L "$HOME/.config/hypr"
+          echo "✓ Rollback verified cleanly."
