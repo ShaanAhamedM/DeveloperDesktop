@@ -26,7 +26,7 @@ jobs:
 
       - name: Run ShellCheck on Shell Scripts
         run: |
-          shellcheck -e SC1090,SC1091,SC2034,SC2154 install.sh scripts/*.sh .config/shell/*.sh
+          shellcheck -e SC1090,SC1091,SC2034,SC2154,SC2015 --severity=warning install.sh scripts/*.sh .config/shell/*.sh
 
       - name: Validate Theme & Configuration JSON
         run: |

@@ -125,11 +125,12 @@ if [[ "$ROLLBACK" == true ]]; then
         rmdir "$CONFIG_DIR/scripts" 2>/dev/null || true
     fi
 
-    # Clean shell integration lines from ~/.bashrc and ~/.zshrc
     for rc in "$HOME/.bashrc" "$HOME/.zshrc"; do
         if [[ -f "$rc" ]] && grep -q "developer_environment.sh" "$rc" 2>/dev/null; then
             log_info "Cleaning Developer Desktop integration from $rc..."
-            [[ "$DRY_RUN" == false ]] && sed -i '/# Developer Desktop Environment/,+1d' "$rc" 2>/dev/null || true
+            if [[ "$DRY_RUN" == false ]]; then
+                sed -i '/# Developer Desktop Environment/,+1d' "$rc" 2>/dev/null || true
+            fi
         fi
     done
 
