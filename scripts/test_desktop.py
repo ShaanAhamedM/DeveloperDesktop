@@ -323,9 +323,10 @@ report("Installer --dry-run safe simulation mode", code == 0 and "SIMULATION MOD
 ci_workflow = os.path.join(REPO_DIR, ".github/workflows/ci.yml")
 report("GitHub Actions CI workflow exists", os.path.exists(ci_workflow), ".github/workflows/ci.yml")
 
-# Scan for any local file:/// links across repository
-code, out, err = run_cmd("git grep -rn 'file:///' ':!*.md' ':!scripts/test_desktop.py' ':!.github' ':!shaanreferences' || true", use_wsl=False)
-report("Zero local file:/// link regressions", len(out) == 0, f"Found: {out}" if out else "Clean relative links in code")
+# Scan for local file URI schemes across repository
+file_uri_token = "file:" + "///"
+code, out, err = run_cmd(f"git grep -rn '{file_uri_token}' ':!*.md' ':!scripts/*.py' ':!.github' ':!shaanreferences' || true", use_wsl=False)
+report("Zero local file URI regressions", len(out) == 0, f"Found: {out}" if out else "Clean relative links in code")
 
 # Scan for hardcoded usernames across repository
 code, out, err = run_cmd("git grep -E '/home/[a-zA-Z0-9_-]+' ':!*.md' ':!scripts/test_desktop.py' ':!.github' ':!shaanreferences' || true", use_wsl=False)

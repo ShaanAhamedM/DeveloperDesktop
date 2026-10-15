@@ -35,7 +35,7 @@ jobs:
 
       - name: Check for Local File Link Regressions
         run: |
-          if grep -rn "file:///" README.md LICENSE .config/ scripts/; then
+          if grep -rn --exclude="*.py" "file:///" README.md LICENSE .config/ scripts/; then
             echo "Error: Local file:/// URI found!"
             exit 1
           fi

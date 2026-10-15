@@ -9,3 +9,5 @@ desktop.ini
 # Temporary / Scratch Files
 *.tmp
 *.bak
+__pycache__/
+*.pyc

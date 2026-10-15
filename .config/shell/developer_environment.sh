@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # ==============================================================================
 #  developer_environment.sh - Universal Shell Environment & Aliases
 #  Maintained by: Shaan
