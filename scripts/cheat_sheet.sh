@@ -9,11 +9,11 @@ Super + Return        󰞷 Launch Terminal (Kitty / xterm)
 Super + Space / D      Launch Application Menu (Rofi)
 Super + W              Switch Open Windows
 Super + M             󰍛 Open System Monitor (btop)
-Super + O / P         󱉯 Developer Project Picker
+Super + O             󱉯 Developer Project Picker
 Super + Q             󰅖 Close Focused Window
 Super + F             󰊓 Toggle Fullscreen
 Super + V             󰉍 Toggle Floating Mode
-Super + S             󰕰 Toggle Tiling Split
+Super + S / P         󰕰 Toggle Tiling Split / Pseudo-Tile
 Super + ~ (grave)      Quake Dropdown Scratchpad Terminal
 Super + 1..9          󰄲 Jump to Workspace 1 through 9
 Super + Shift + 1..9  󰚡 Move Window to Workspace 1..9

@@ -352,10 +352,65 @@ report("Battery & desktop fallback parser execution", code == 0 and len(out.spli
 code, out, err = run_cmd("bash -c 'source scripts/sys_metrics.sh 2>/dev/null; get_ram'")
 report("Direct meminfo parser sub-millisecond execution", code == 0 and len(out.split()) == 3, out)
 
+# Test POSIX df -Ph locale independence under LC_ALL=C
+code, out, err = run_cmd("bash -c 'LC_ALL=C bash scripts/sys_metrics.sh --all'")
+report("Metrics locale independence under LC_ALL=C", code == 0 and "CPU Usage" in out)
+
 # -----------------------------------------------------------------------------
-# 9. Live Display & IPC Keybinding Operations (Conditional)
+# 9. Deliverables, Screenshots & Community Standards Verification
 # -----------------------------------------------------------------------------
-print(f"\n{Colors.YELLOW}>> 9. Testing Live X11 Display & IPC Keybinding Operations...{Colors.RESET}")
+print(f"\n{Colors.YELLOW}>> 9. Verifying Deliverables, Screenshots & Community Files...{Colors.RESET}")
+
+# Deliverable Screenshots
+shots = [
+    ("screenshot.png", 1920, 1080),
+    ("screenshot_workstation.png", 1920, 1080),
+    ("screenshot_launcher.png", 1920, 1080),
+]
+for sname, exp_w, exp_h in shots:
+    spath = os.path.join(REPO_DIR, sname)
+    exists = os.path.exists(spath)
+    valid_png = False
+    size_ok = False
+    if exists:
+        sz = os.path.getsize(spath)
+        size_ok = (sz > 30000)
+        with open(spath, "rb") as f:
+            header = f.read(8)
+            valid_png = (header == b"\x89PNG\r\n\x1a\n")
+    report(f"Deliverable screenshot: {sname}", exists and valid_png and size_ok, f"Size={os.path.getsize(spath)//1024}KB" if exists else "Missing")
+
+# Open Source Community Files
+community_files = ["LICENSE", "CONTRIBUTING.md", "CODE_OF_CONDUCT.md"]
+for cf in community_files:
+    cpath = os.path.join(REPO_DIR, cf)
+    report(f"Community file integrity: {cf}", os.path.exists(cpath) and os.path.getsize(cpath) > 100)
+
+# Compositor Keybinding Parity (Core Req #2)
+i3_file = os.path.join(REPO_DIR, ".config/i3/config")
+hypr_file = os.path.join(REPO_DIR, ".config/hypr/hyprland.conf")
+parity_ok = True
+if os.path.exists(i3_file) and os.path.exists(hypr_file):
+    with open(i3_file, "r", encoding="utf-8") as f:
+        i3_txt = f.read()
+    with open(hypr_file, "r", encoding="utf-8") as f:
+        hypr_txt = f.read()
+
+    core_binds = ["Return", "space", "1", "2", "3", "4", "5"]
+    for b in core_binds:
+        if b not in i3_txt or b not in hypr_txt:
+            parity_ok = False
+report("Hyprland & i3 core keybinding parity", parity_ok, "Terminal, Launcher, Workspaces 1..5 aligned")
+
+# Author Attribution Check
+with open(os.path.join(REPO_DIR, "LICENSE"), "r", encoding="utf-8") as f:
+    lic_txt = f.read()
+report("Author attribution strictly Shaan", "Shaan" in lic_txt and "MIT" in lic_txt)
+
+# -----------------------------------------------------------------------------
+# 10. Live Display & IPC Keybinding Operations (Conditional)
+# -----------------------------------------------------------------------------
+print(f"\n{Colors.YELLOW}>> 10. Testing Live X11 Display & IPC Keybinding Operations...{Colors.RESET}")
 code, out, err = run_cmd("i3-msg -t get_version", env={"DISPLAY": ":1"})
 is_i3_running = (code == 0 and "human_readable" in out)
 

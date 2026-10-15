@@ -289,11 +289,14 @@ if [[ "$DRY_RUN" == false ]]; then
 fi
 
 for script in "$DOTFILES_DIR/scripts"/*; do
+    [[ -f "$script" ]] || continue
     script_name="$(basename "$script")"
     if [[ "$DRY_RUN" == false ]]; then
         chmod +x "$script" 2>/dev/null || true
         ln -sfn "$script" "$CONFIG_DIR/scripts/$script_name"
-        ln -sfn "$script" "$LOCAL_BIN/$script_name"
+        if [[ "$script_name" == *.sh ]]; then
+            ln -sfn "$script" "$LOCAL_BIN/$script_name"
+        fi
     fi
     log_success "Script enabled: $script_name -> $CONFIG_DIR/scripts/$script_name"
 done

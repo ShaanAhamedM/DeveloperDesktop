@@ -87,21 +87,30 @@ get_battery() {
         if [[ "$status" == "Charging" ]]; then icon="󰂄"; fi
         echo "battery $capacity $status $icon"
     else
-        # Desktop / VM Fallback: Show Root Disk Usage
-        disk_used_percent=$(df -h / 2>/dev/null | awk 'NR==2 {print int($5)}') || disk_used_percent=0
-        disk_avail=$(df -h / 2>/dev/null | awk 'NR==2 {print $4}') || disk_avail="0G"
+        # Desktop / VM Fallback: Show Root Disk Usage (POSIX df -Ph for universal single-line parsing)
+        disk_used_percent=$(LC_ALL=C df -Ph / 2>/dev/null | awk 'END {print int($5)}') || disk_used_percent=0
+        disk_avail=$(LC_ALL=C df -Ph / 2>/dev/null | awk 'END {print $4}') || disk_avail="0G"
         echo "desktop $disk_used_percent $disk_avail 󰋊"
     fi
 }
 
 # --- Trigger Immediate Bar Refresh (Bonus: Event-Driven Optimization) ---
 trigger_refresh() {
+    local signaled=false
     # Send custom Real-Time Signal to Waybar to trigger instant update without polling
     if pgrep -x waybar > /dev/null; then
         pkill -RTMIN+8 waybar 2>/dev/null || true
         echo "Sent instant refresh signal to Waybar (RTMIN+8)"
-    else
-        echo "Waybar is not currently running"
+        signaled=true
+    fi
+    # If running under i3, notify or reload bar
+    if command -v i3-msg &>/dev/null && pgrep -x i3 > /dev/null; then
+        i3-msg -q restart 2>/dev/null || true
+        echo "Sent instant refresh trigger to i3"
+        signaled=true
+    fi
+    if [[ "$signaled" == false ]]; then
+        echo "Waybar/i3bar not currently running (signal queued)"
     fi
 }
 

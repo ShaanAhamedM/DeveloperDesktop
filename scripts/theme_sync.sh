@@ -12,10 +12,14 @@
 
 set -euo pipefail
 
-DEFAULT_WALLPAPER="$(dirname "$0")/../wallpapers/minimalist-dark.png"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+DEFAULT_WALLPAPER="$REPO_DIR/wallpapers/minimalist-dark.png"
 WALLPAPER="${1:-$DEFAULT_WALLPAPER}"
 
-if [[ ! -f "$WALLPAPER" ]]; then
+if [[ -f "$WALLPAPER" ]]; then
+    WALLPAPER="$(realpath "$WALLPAPER" 2>/dev/null || readlink -f "$WALLPAPER" 2>/dev/null || echo "$WALLPAPER")"
+else
     echo "Error: Wallpaper file not found: $WALLPAPER" >&2
     exit 1
 fi
@@ -32,7 +36,7 @@ fi
 
 # --- 2. Dynamic Palette Extraction / Fallback ---
 # If pywal or matugen is installed, extract dynamic colors; otherwise apply Nordic Charcoal base
-PALETTE_FILE="$(dirname "$0")/../themes/nordic-charcoal.json"
+PALETTE_FILE="$REPO_DIR/themes/nordic-charcoal.json"
 ACCENT="#89dceb"
 
 if command -v wal &>/dev/null && [[ -f "$WALLPAPER" ]]; then
