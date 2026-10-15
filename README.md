@@ -3,7 +3,6 @@
 <div align="center">
 
 [![CI Build](https://img.shields.io/badge/CI-Passing%20(100%25)-success?style=for-the-badge&logo=githubactions&logoColor=white)](.github/workflows/ci.yml)
-[![Tests](https://img.shields.io/badge/Tests-63%2F63%20Passing-brightgreen?style=for-the-badge&logo=pytest&logoColor=white)](scripts/test_desktop.py)
 [![Platform](https://img.shields.io/badge/Platform-Arch%20%7C%20Ubuntu%20%7C%20Fedora%20%7C%20WSL2-blue?style=for-the-badge&logo=linux&logoColor=white)](install.sh)
 [![Display](https://img.shields.io/badge/Compositor-Hyprland%20%7C%20i3-00B4D8?style=for-the-badge)](.config/hypr/hyprland.conf)
 [![Terminal](https://img.shields.io/badge/Terminal-Kitty%20%7C%20Tmux-green?style=for-the-badge&logo=kitty&logoColor=white)](.config/kitty/kitty.conf)
@@ -12,7 +11,7 @@
 
 **A keyboard-driven developer workstation designed to be fast, clean, and distraction-free.**
 
-[Quick Start](#-quick-start) • [Visual Showcase](#-visual-showcase) • [Core & Bonus Features](#-features-checklist) • [Keyboard Shortcuts](#-keyboard-shortcuts) • [Architecture](#-architecture) • [Developer Cockpit](#-developer-cockpit-suite) • [Automated Tests](#-automated-testing-6363-tests)
+[Quick Start](#-quick-start) • [Visual Showcase](#-visual-showcase) • [Core & Bonus Features](#-features-checklist) • [Keyboard Shortcuts](#-keyboard-shortcuts) • [Architecture](#-architecture) • [Developer Cockpit](#-developer-cockpit-suite)
 
 </div>
 
@@ -222,38 +221,6 @@ bash scripts/sys_metrics.sh --json
 bash scripts/sys_metrics.sh --refresh
 ```
 
----
-
-## 🧪 Automated Testing (63/63 Tests)
-
-Every configuration, shortcut, and shell script is automatically tested:
-
-```bash
-# Run the complete test suite
-python3 scripts/test_desktop.py
-```
-
-```text
-======================================================
-  Developer Desktop - Automated Verification Suite   
-  Target: ~/DeveloperDesktop
-  Runtime: Linux / WSL2
-======================================================
->> 1. Verifying Shell Script Syntax & Permissions... (10/10 PASS)
->> 2. Testing System Metrics Engine (sys_metrics.sh)... (11/11 PASS)
->> 3. Testing Dynamic Theming Engine (theme_sync.sh)... (4/4 PASS)
->> 4. Testing Developer Productivity Tools... (4/4 PASS)
->> 5. Validating Developer Cockpit Configurations... (10/10 PASS)
->> 6. Validating Window Manager Configurations... (5/5 PASS)
->> 7. Verifying Enterprise Installer & Repository Polish... (5/5 PASS)
->> 8. Mocking procfs & Extreme Condition Simulations... (6/6 PASS)
->> 9. Verifying Deliverables, Screenshots & Community Files... (8/8 PASS)
-======================================================
-Total Tests Executed : 63
-Tests Passed         : 63 (100%)
-All Tests Passed with Zero Failures! Production Grade.
-======================================================
-```
 
 ---
 
