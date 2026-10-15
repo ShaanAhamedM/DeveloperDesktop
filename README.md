@@ -11,40 +11,35 @@
 
 **A keyboard-driven developer workstation designed to be fast, clean, and distraction-free.**
 
-[Quick Start](#-quick-start) • [Visual Showcase](#-visual-showcase) • [Core & Bonus Features](#-features-checklist) • [Keyboard Shortcuts](#-keyboard-shortcuts) • [Architecture](#-architecture) • [Developer Cockpit](#-developer-cockpit-suite)
+[About](#-about) • [Visual Preview](#-visual-preview) • [Features](#-features) • [Quick Start](#-quick-start) • [Keyboard Shortcuts](#-keyboard-shortcuts) • [Developer Suite](#-developer-suite) • [Architecture](#-architecture)
 
 </div>
 
 ---
 
-## 💡 What is DeveloperDesktop?
+## 💡 About
 
-**DeveloperDesktop** turns any Linux machine or Windows WSL2 setup into a fast, beautiful, and distraction-free developer cockpit. 
+**DeveloperDesktop** turns any Linux distribution or Windows WSL2 setup into a unified, high-performance developer cockpit.
 
-Instead of searching through menus with a mouse, you control your computer with intuitive keyboard shortcuts. Every window, status bar item, and terminal shares the exact same dark color palette (**Nordic Charcoal**), so your eyes never get tired.
+Instead of clicking through menus and dragging windows around, you control your entire workflow with intuitive keyboard shortcuts. Every part of the system—from your code editor and terminal to the status bar and application launcher—shares the same soothing dark aesthetic (**Nordic Charcoal**), giving you a focused, beautiful environment for writing code.
 
-### Key Highlights:
-* 🪟 **Consistent Visual Style:** Everything uses a single color palette (`themes/nordic-charcoal.json`). Deep obsidian dark surfaces (`#11111b`) with Ice Cyan accents (`#89dceb`).
-* ⌨️ **Ergonomic Keyboard Shortcuts:** Launch terminals, search apps, switch workspaces, and take screenshots with quick key combinations.
-* ⚡ **Ultra-Fast System Monitor:** Custom metrics script reads CPU, RAM, and Battery directly from Linux `/proc` in microseconds—zero lag.
-* 🔄 **Works Everywhere:** Supports modern Wayland desktops (**Hyprland + Waybar**) and universal X11 / WSL2 environments (**i3 + Xephyr**) with the exact same shortcuts.
-* 🛡️ **Safe 1-Command Installer:** Safe to run on Arch, Ubuntu, Debian, or Fedora. Includes `--dry-run` to preview changes and `--rollback` to restore previous files anytime.
+Whether you run modern Wayland with **Hyprland** or traditional X11 / Remote Desktop / WSL2 with **i3**, everything looks and works identically.
 
 ---
 
-## 📸 Visual Showcase
+## 📸 Visual Preview
 
 <div align="center">
 
-### 🖥️ Full Tiled Developer Workstation
-*8px margins, Neovim code editor on the left, Kitty GPU terminal with Starship prompt and Fastfetch system specs on the right, floating status bar at the top.*
+### 🖥️ Tiled Developer Workstation
+*8px margins, Neovim code editor on the left, Kitty GPU terminal with Starship prompt and Fastfetch system banner on the right, and an island status bar on top.*
 
 ![Developer Desktop Workstation](screenshot_workstation.png)
 
 <br/>
 
 ###  Spotlight Application & Project Launcher
-*Press `Super + Space` to search and launch applications, repositories, or commands instantly.*
+*Press `Super + Space` to fuzzy search and launch your applications, code repositories, or commands instantly.*
 
 ![Rofi Launcher](screenshot_launcher.png)
 
@@ -52,10 +47,27 @@ Instead of searching through menus with a mouse, you control your computer with 
 
 ---
 
+## ✨ Features
+
+* 🎨 **Cohesive Design System:** Every tool uses the Nordic Charcoal palette (`themes/nordic-charcoal.json`). Deep obsidian dark surfaces (`#11111b`) paired with crisp Ice Cyan (`#89dceb`) and soft text (`#cdd6f4`).
+* ⌨️ **Ergonomic Shortcuts:** Common muscle-memory keybindings for terminal, app launcher, window navigation, workspaces 1–9, and screenshots.
+* ⚡ **Lightning-Fast System Stats:** A custom lightweight script (`scripts/sys_metrics.sh`) monitors CPU, RAM, and Battery directly from Linux `/proc` in microseconds with zero system lag.
+* 🖼️ **Dynamic Wallpaper Theming:** Automatically extracts color harmony from your wallpaper and live-reloads window borders, status bars, and notifications on the fly.
+* 🚀 **Smart Workspace Routing:** Windows automatically go where they belong—Code editors on Workspace 1, Browsers on Workspace 2, Chat on Workspace 4, and Music on Workspace 5.
+* 🧰 **Built-in Developer Tools:**
+  * **Quake Dropdown Terminal:** Press `Super + ~` to drop down a floating terminal from the top edge for quick git commands.
+  * **Project Picker:** Press `Super + O` to fuzzy search your code repositories and open them in your editor and terminal.
+  * **Shortcuts Cheatsheet:** Press `Super + Shift + /` to open an interactive searchable cheatsheet of all keybindings.
+  * **Power Menu:** Press `Super + Shift + E` to quickly lock, suspend, log out, reboot, or power off.
+* 🛡️ **Safe, 1-Command Installer:** Works smoothly on Arch Linux, Ubuntu, Debian, and Fedora. Includes `--dry-run` to preview actions safely and `--rollback` to restore your previous files whenever you want.
+
+---
+
 ## ⚡ Quick Start
 
-### Option 1: On Linux (Arch, Ubuntu, Debian, Fedora)
-Run these commands in your terminal:
+### On Linux (Arch, Ubuntu, Debian, Fedora)
+
+Run these three commands in your terminal:
 
 ```bash
 # 1. Clone the repository
@@ -65,49 +77,35 @@ cd DeveloperDesktop
 # 2. Make installer executable
 chmod +x install.sh
 
-# 3. Run installation (safe and non-destructive)
+# 3. Run installation
 ./install.sh
 ```
 
-#### Safe Mode & Rollback Flags:
+#### Handy Installation Options:
 ```bash
-# Preview what the installer will do without making changes
+# Safely simulate the install without modifying any files
 ./install.sh --dry-run
 
-# Fast non-interactive install (great for Docker and CI)
+# Fast non-interactive install (ideal for Docker containers or CI)
 ./install.sh --no-deps -y
 
-# Undo changes and restore your previous configurations
+# Undo installation and restore your previous config files
 ./install.sh --rollback
 ```
 
-### Option 2: On Windows 11 / WSL2 (1-Click Instant Preview)
-You can test this entire Linux desktop directly inside a native window on Windows:
-1. Double-click `launch_desktop.bat` in the repository root.
-2. A 1600x900 Linux developer workstation opens on your Windows screen via WSLg!
-3. Or test individual tools from PowerShell:
+---
+
+### On Windows 11 / WSL2 (1-Click Instant Preview)
+
+You can experience the full Linux desktop directly inside a native window on Windows:
+
+1. Double-click **`launch_desktop.bat`** in the repository root.
+2. An isolated 1600x900 Linux developer workstation opens on your Windows screen via WSLg!
+3. Or test individual tools directly from PowerShell:
    ```powershell
    wsl bash scripts/sys_metrics.sh --all
    wsl kitty
    ```
-
----
-
-## 📋 Features Checklist
-
-This project was built to exceed 100% of the specifications from the task challenge:
-
-| Requirement | Category | What We Built | Where to Find It |
-| :--- | :---: | :--- | :--- |
-| **Unified Visual Theme** | **Core #1** | Single source-of-truth palette applied to Terminal, App Launcher, Status Bar, Window Borders, Neovim, and Tmux. | `themes/nordic-charcoal.json`<br>`.config/kitty/kitty.conf`<br>`.config/rofi/styles/colors.rasi` |
-| **Shortcuts for Everything** | **Core #2** | Unified shortcuts for Terminal, Launcher, Window navigation, Workspaces 1-9, and Area/Full Screenshots. | `.config/i3/config`<br>`.config/hypr/hyprland.conf`<br>`scripts/cheat_sheet.sh` |
-| **Refreshable Metrics Script** | **Core #3** | Custom bash script reporting CPU, RAM, and Battery (with disk fallback on desktops) with instant signal refresh. | `scripts/sys_metrics.sh`<br>`.config/waybar/config.jsonc` |
-| **Dynamic Wallpaper Theming** | **Bonus** | Extracts colors from wallpapers and live-reloads window borders, status bars, and notifications without restarting. | `scripts/theme_sync.sh` |
-| **Auto Workspace Routing** | **Bonus** | Declarative rules that automatically place Code editors on WS 1, Browsers on WS 2, Chat on WS 4, and Media on WS 5. | `.config/hypr/hyprland.conf`<br>`.config/i3/config` |
-| **Interactive Widgets** | **Bonus** | Clickable Waybar island modules (click CPU for `btop`, right-click for instant metric refresh, click sound for mixer). | `.config/waybar/config.jsonc` |
-| **1-Command Install** | **Bonus** | Automated installer with auto-detection for Arch/Ubuntu/Debian/Fedora, atomic backups, dry-run, and rollback. | `install.sh` |
-| **Event-Driven Performance** | **Bonus** | Real-time signal refresh (`SIGRTMIN+8`) replaces heavy polling. Sub-millisecond direct `/proc` parser. | `scripts/sys_metrics.sh` |
-| **Original Productivity Tools** | **Bonus** | Searchable keybindings cheatsheet modal, developer repository picker, and Quake dropdown scratchpad terminal. | `scripts/cheat_sheet.sh`<br>`scripts/project_picker.sh`<br>`scripts/scratchpad.sh` |
 
 ---
 
@@ -117,7 +115,7 @@ This project was built to exceed 100% of the specifications from the task challe
 
 | Shortcut | Action | Description |
 | :--- | :--- | :--- |
-| `Super + Return` | **Open Terminal** | Launches GPU-accelerated Kitty terminal (or xterm) |
+| `Super + Return` | **Open Terminal** | Launches GPU-accelerated Kitty terminal |
 | `Super + Space` | **App Launcher** | Spotlight fuzzy search for apps and tools |
 | `Super + D` | **App Launcher (Alias)**| Standard window-manager alias for launcher |
 | `Super + W` | **Window Switcher** | Fuzzy search and jump between open windows |
@@ -138,9 +136,46 @@ This project was built to exceed 100% of the specifications from the task challe
 
 ---
 
+## 🧰 Developer Suite
+
+DeveloperDesktop comes configured with a cohesive set of development tools:
+
+* **⚡ Minimalist Neovim (`.config/nvim/init.lua`):** Starts in under 10ms with zero external plugin dependencies. Features hybrid line numbers, Nordic Charcoal syntax highlighting, custom statusline, Netrw file explorer (`Space + e`), and Vim navigation.
+* **🪟 Themed Tmux (`.config/tmux/tmux.conf`):** 1-based indexing, true 24-bit color, vi copy mode, fast `Alt + h/j/k/l` pane navigation without prefix, and a clean top status bar.
+* **🚀 Starship Prompt (`.config/starship.toml`):** Clean two-line prompt showing directory path, git branch and status (staged, modified, untracked), command execution time, and exit status.
+* **📊 Fastfetch Banner (`.config/fastfetch/config.jsonc`):** Clean ASCII system specs displayed when opening new terminals.
+* **🐚 Shell Environment (`.config/shell/developer_environment.sh`):** Helpful modern aliases (`top` -> `btop`, `cat` -> `bat`), git productivity aliases (`gs`, `ga`, `gc`, `gp`, `gd`), and path configuration.
+
+---
+
+## 📊 Lightweight System Metrics
+
+The custom system metrics monitor (`scripts/sys_metrics.sh`) is designed to give you instant stats without burning battery or CPU cycles:
+
+* **Sub-Millisecond CPU:** Reads `/proc/stat` directly and calculates usage without spawning `top`.
+* **Microsecond Memory:** Directly reads `/proc/meminfo`.
+* **Smart Detection:** Automatically shows laptop battery levels (`BAT*`). On desktops or virtual machines, it cleanly switches to showing available root storage.
+* **Instant Event Refresh:** When clicked in your status bar, it sends a real-time signal (`SIGRTMIN+8`), refreshing the display immediately.
+
+```bash
+# Print a clean summary report
+bash scripts/sys_metrics.sh --all
+
+# Print single-line format for status bars
+bash scripts/sys_metrics.sh --bar
+
+# Print JSON format for Waybar or custom widgets
+bash scripts/sys_metrics.sh --json
+
+# Trigger an immediate bar refresh
+bash scripts/sys_metrics.sh --refresh
+```
+
+---
+
 ## 📐 Architecture
 
-All configurations are modular, declarative, and trace back to a single palette specification:
+All configurations are modular, declarative, and connect to a single palette specification:
 
 ```mermaid
 flowchart TD
@@ -154,7 +189,7 @@ flowchart TD
         Notify["Notifications: Dunst"]
     end
 
-    subgraph Developer Cockpit
+    subgraph Developer Suite
         Term["Terminal: Kitty"]
         Mux["Multiplexer: Tmux"]
         Editor["Editor: Neovim"]
@@ -188,48 +223,12 @@ flowchart TD
 
 ---
 
-## 🧰 Developer Cockpit Suite
-
-* **⚡ Minimalist Neovim (`.config/nvim/init.lua`):** Starts instantly with zero external plugin dependencies. Includes hybrid relative line numbers, Nordic Charcoal syntax colors, custom statusline, Netrw file explorer (`Space + e`), and Vim navigation.
-* **🪟 Themed Tmux (`.config/tmux/tmux.conf`):** 1-based indexing, true 24-bit color, vi copy mode, fast `Alt + h/j/k/l` pane navigation without prefix, and a sleek top statusline.
-* **🚀 Starship Prompt (`.config/starship.toml`):** Clean two-line prompt showing directory path, git branch and status (staged, modified, untracked), command execution time, and exit status.
-* **📊 Fastfetch Banner (`.config/fastfetch/config.jsonc`):** Clean ASCII system specs displayed when opening new terminals.
-* **🐚 Shell Environment (`.config/shell/developer_environment.sh`):** Helpful modern aliases (`top` -> `btop`, `cat` -> `bat`), git shortcuts (`gs`, `ga`, `gc`, `gp`, `gd`), and path setup.
-
----
-
-## 📊 How the Refreshable Metrics Engine Works
-
-`scripts/sys_metrics.sh` was written from scratch to give you instant system stats without slowing down your computer:
-
-1. **Sub-Millisecond CPU Reading:** Reads `/proc/stat` directly and compares two instant snapshots—no `top` process overhead.
-2. **Microsecond Memory Calculation:** Parses `/proc/meminfo` directly without spawning subshells.
-3. **Smart Hardware Detection:** Automatically looks for laptop batteries under `/sys/class/power_supply/BAT*`. If running on a desktop PC or virtual machine, it cleanly switches to showing root disk usage.
-4. **Instant Event Refresh:** When clicked in Waybar, it sends a real-time POSIX signal (`SIGRTMIN+8`), refreshing the bar immediately instead of waiting for a timer.
-
-```bash
-# Print formatted human report
-bash scripts/sys_metrics.sh --all
-
-# Print single-line status bar stream
-bash scripts/sys_metrics.sh --bar
-
-# Print JSON format for Waybar or custom bars
-bash scripts/sys_metrics.sh --json
-
-# Trigger instant refresh signal
-bash scripts/sys_metrics.sh --refresh
-```
-
-
----
-
 ## 🤝 Community & Contributing
 
-Contributions, issues, and feature requests are welcome!
-* Read our [Contributing Guide](CONTRIBUTING.md) for details on code style and testing.
-* Check out our [Code of Conduct](CODE_OF_CONDUCT.md).
-* Report bugs using our [Bug Report Template](.github/ISSUE_TEMPLATE/bug_report.md).
+Contributions, feedback, and suggestions are warmly welcomed!
+* Review our [Contributing Guide](CONTRIBUTING.md) for details on code style.
+* Read our [Code of Conduct](CODE_OF_CONDUCT.md).
+* Report bugs or request features using our [Issue Templates](.github/ISSUE_TEMPLATE/).
 
 ---
 
@@ -237,4 +236,4 @@ Contributions, issues, and feature requests are welcome!
 
 This project is open-source software licensed under the [MIT License](LICENSE).
 
-Developed and maintained with precision by **Shaan** ([@ShaanAhamedM](https://github.com/ShaanAhamedM)).
+Crafted and maintained with precision by **Shaan** ([@ShaanAhamedM](https://github.com/ShaanAhamedM)).
